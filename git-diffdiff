@@ -1,3 +1,9 @@
 #!/bin/bash
+# Check if colordiff exists
+if command -v colordiff >/dev/null 2>&1 ; then
+    DIFF_COMMAND="colordiff"
+else
+    DIFF_COMMAND="diff"
+fi
 
-colordiff -y --suppress-common-lines <(git diff -U0 --oneline $1 | sed 's/^--- \(.*\)$/diff1 \1/g')  <(git diff -U0 --oneline $2 | sed 's/^--- \(.*\)$/diff2 \1/g') | sed -n '/\(index\).*/!p'
+$DIFF_COMMAND -y --suppress-common-lines <(git diff -U0 --oneline $1 | sed 's/^--- \(.*\)$/diff1 \1/g')  <(git diff -U0 --oneline $2 | sed 's/^--- \(.*\)$/diff2 \1/g') | sed -n '/\(index\).*/!p'
